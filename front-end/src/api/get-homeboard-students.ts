@@ -3,14 +3,24 @@ import { httpMock } from "shared/helpers/http-mock"
 import { addIfNotExist, LocalStorageKey } from "shared/helpers/local-storage"
 import { ApiResponse } from "shared/interfaces/http.interface"
 import { Person } from "shared/models/person"
+import { sorter } from "staff-app/utils/sort"
 
-export async function getHomeboardStudents(): Promise<ApiResponse<{ students: Person[] }>> {
-  try {
+export async function getHomeboardStudents({query}:any): Promise<ApiResponse<{ students: Person[] }>> {
+  try {           
     await httpMock({ randomFailure: true })
-    return {
-      success: true,
-      students: addIfNotExist(LocalStorageKey.students, generateStudents(14)),
+    if(query.sort){    
+      return {
+        success: true,
+        students: sorter({students:addIfNotExist(LocalStorageKey.students, generateStudents(14)),type:query.sort||"",sortBy:query.sortBy}),
+      }
     }
+    else{
+      return {
+        success: true,
+        students: addIfNotExist(LocalStorageKey.students, generateStudents(14)),
+      }
+    }
+ 
   } catch (error) {
     return {
       success: false,

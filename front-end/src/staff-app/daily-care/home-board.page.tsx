@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import Button from "@material-ui/core/ButtonBase"
+import {BsSortAlphaDown,BsSortAlphaUpAlt} from "react-icons/bs"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Spacing, BorderRadius, FontWeight } from "shared/styles/styles"
 import { Colors } from "shared/styles/colors"
@@ -9,20 +10,29 @@ import { Person } from "shared/models/person"
 import { useApi } from "shared/hooks/use-api"
 import { StudentListTile } from "staff-app/components/student-list-tile/student-list-tile.component"
 import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active-roll-overlay/active-roll-overlay.component"
+import { nameSort } from "staff-app/constants/table"
 
 export const HomeBoardPage: React.FC = () => {
   const [isRollMode, setIsRollMode] = useState(false)
+  const [sortBy,setSortBy]=useState("first_name")
   const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
-
+  
   useEffect(() => {
-    void getStudents()
+    void getStudents({sort:""})
   }, [getStudents])
 
   const onToolbarAction = (action: ToolbarAction) => {
     if (action === "roll") {
       setIsRollMode(true)
     }
+    if(action==="ascending-sort"){
+      void getStudents({sort:"ASC",sortBy:sortBy});
+    }
+    if(action==="descending-sort"){
+      void getStudents({sort:"DSC",sortBy:sortBy});    
+    }
   }
+ 
 
   const onActiveRollAction = (action: ActiveRollAction) => {
     if (action === "exit") {
@@ -33,7 +43,7 @@ export const HomeBoardPage: React.FC = () => {
   return (
     <>
       <S.PageContainer>
-        <Toolbar onItemClick={onToolbarAction} />
+        <Toolbar onItemClick={onToolbarAction} onSelectClick={(e)=>{console.log(e,"log"),setSortBy(e)}} />
 
         {loadState === "loading" && (
           <CenteredContainer>
@@ -43,8 +53,8 @@ export const HomeBoardPage: React.FC = () => {
 
         {loadState === "loaded" && data?.students && (
           <>
-            {data.students.map((s) => (
-              <StudentListTile key={s.id} isRollMode={isRollMode} student={s} />
+            {data.students.map((student) => (
+              <StudentListTile key={student.id} isRollMode={isRollMode} student={student} />
             ))}
           </>
         )}
@@ -60,15 +70,29 @@ export const HomeBoardPage: React.FC = () => {
   )
 }
 
-type ToolbarAction = "roll" | "sort"
+type ToolbarAction = "roll" | "ascending-sort"|"descending-sort"
 interface ToolbarProps {
   onItemClick: (action: ToolbarAction, value?: string) => void
+  onSelectClick:(value:string)=>void
 }
 const Toolbar: React.FC<ToolbarProps> = (props) => {
-  const { onItemClick } = props
+  const { onItemClick,onSelectClick } = props
   return (
     <S.ToolbarContainer>
-      <div onClick={() => onItemClick("sort")}>First Name</div>
+      <div>Name</div>
+      <div style={{display:"flex",columnGap:"12px"}}>
+        Sort By:
+        <select onChange={(e)=>{onSelectClick(e.target.value)}}>
+          {
+            nameSort.map(item=>{
+              return<option key={item.id} value={item.value} >{item.name}</option>
+            })
+          }
+        </select>
+      <BsSortAlphaDown onClick={() => onItemClick("ascending-sort")}/>
+      <BsSortAlphaUpAlt onClick={() => onItemClick("descending-sort")}/>
+      </div>
+     
       <div>Search</div>
       <S.Button onClick={() => onItemClick("roll")}>Start Roll</S.Button>
     </S.ToolbarContainer>
