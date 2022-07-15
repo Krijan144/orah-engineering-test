@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import Button from "@material-ui/core/ButtonBase"
-import {BsSortAlphaDown,BsSortAlphaUpAlt} from "react-icons/bs"
+import {BsSortAlphaDown,BsSortAlphaUpAlt,BsSearch} from "react-icons/bs"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Spacing, BorderRadius, FontWeight } from "shared/styles/styles"
 import { Colors } from "shared/styles/colors"
@@ -15,6 +15,8 @@ import { nameSort } from "staff-app/constants/table"
 export const HomeBoardPage: React.FC = () => {
   const [isRollMode, setIsRollMode] = useState(false)
   const [sortBy,setSortBy]=useState("first_name")
+  const [search,setSearch]=useState("")
+
   const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
   
   useEffect(() => {
@@ -31,6 +33,9 @@ export const HomeBoardPage: React.FC = () => {
     if(action==="descending-sort"){
       void getStudents({sort:"DSC",sortBy:sortBy});    
     }
+    if(action==="search"){
+      void getStudents({search:search});    
+    }
   }
  
 
@@ -43,7 +48,7 @@ export const HomeBoardPage: React.FC = () => {
   return (
     <>
       <S.PageContainer>
-        <Toolbar onItemClick={onToolbarAction} onSelectClick={(e)=>{console.log(e,"log"),setSortBy(e)}} />
+        <Toolbar onItemClick={onToolbarAction} onSelectClick={(e)=>setSortBy(e)} handleChange={(e)=>{setSearch(e.target.value)}} search={search} />
 
         {loadState === "loading" && (
           <CenteredContainer>
@@ -70,13 +75,15 @@ export const HomeBoardPage: React.FC = () => {
   )
 }
 
-type ToolbarAction = "roll" | "ascending-sort"|"descending-sort"
+type ToolbarAction = "roll" | "ascending-sort"|"descending-sort"|"search"
 interface ToolbarProps {
   onItemClick: (action: ToolbarAction, value?: string) => void
   onSelectClick:(value:string)=>void
+  handleChange:(value:any)=>void
+  search:string
 }
 const Toolbar: React.FC<ToolbarProps> = (props) => {
-  const { onItemClick,onSelectClick } = props
+  const { onItemClick,onSelectClick,handleChange,search } = props
   return (
     <S.ToolbarContainer>
       <div>Name</div>
@@ -93,7 +100,10 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
       <BsSortAlphaUpAlt onClick={() => onItemClick("descending-sort")}/>
       </div>
      
-      <div>Search</div>
+      <div style={{display:"flex"}}>
+        <S.StyledInput id="search" onChange={(e)=>handleChange(e)} value={search}/>
+        <BsSearch onClick={()=>onItemClick("search")}/>
+      </div>
       <S.Button onClick={() => onItemClick("roll")}>Start Roll</S.Button>
     </S.ToolbarContainer>
   )
@@ -115,6 +125,10 @@ const S = {
     padding: 6px 14px;
     font-weight: ${FontWeight.strong};
     border-radius: ${BorderRadius.default};
+    svg{
+      font-size:20px;
+      cursor:pointer;
+    }
   `,
   Button: styled(Button)`
     && {
@@ -123,4 +137,25 @@ const S = {
       border-radius: ${BorderRadius.default};
     }
   `,
+  
+ StyledInput : styled.input`${({inputSize}:any)=>`
+    font-size:${inputSize?inputSize:"20"}px; 
+    position: relative;
+    width: 100%;
+    outline: none;
+    transition:0.5s ease-in-out;
+    border-radius: ${BorderRadius.default};
+    :focus {
+      outline: none;
+      border-color: #9ecaed;
+      box-shadow: 0 0 10px #9ecaed;    
+    }
+    ::placeholder {
+      color: grey;
+      }
+    :hover {
+      border-color: #9ecaed;
+      box-shadow: 0 0 10px #9ecaed; 
+    }
+  `}`
 }

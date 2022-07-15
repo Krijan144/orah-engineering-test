@@ -35,7 +35,7 @@ export function useApi<ReturnType = {}>({ url, initialLoadState = "loading" }: O
           return saveActiveRoll(params as RollInput).then(process)
       }
     },
-    [url,]
+    [url]
   )
 
   return [callApi, state.data, state.loadState, state.error ] as const
