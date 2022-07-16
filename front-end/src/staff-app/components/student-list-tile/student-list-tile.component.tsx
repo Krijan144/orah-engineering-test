@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import { Spacing, BorderRadius, FontWeight } from "shared/styles/styles"
 import { Images } from "assets/images"
@@ -9,9 +9,9 @@ import { RollStateSwitcher } from "staff-app/components/roll-state/roll-state-sw
 interface Props {
   isRollMode?: boolean
   student: Person
+  stateChange():string
 }
-export const StudentListTile: React.FC<Props> = ({ isRollMode, student }) => {
-  
+export const StudentListTile: React.FC<Props> = ({ isRollMode, student,stateChange }) => {
   return (
     <S.Container>
       <S.Avatar url={Images.avatar}></S.Avatar>
@@ -20,7 +20,7 @@ export const StudentListTile: React.FC<Props> = ({ isRollMode, student }) => {
       </S.Content>
       {isRollMode && (
         <S.Roll>
-          <RollStateSwitcher />
+          <RollStateSwitcher onStateChange={(e)=>stateChange(e)}/>
         </S.Roll>
       )}
     </S.Container>

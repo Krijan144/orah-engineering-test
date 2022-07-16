@@ -11,7 +11,7 @@ export async function getHomeboardStudents({query}:any): Promise<ApiResponse<{ s
     if(query.sort){    
       return {
         success: true,
-        students: sorter({students:addIfNotExist(LocalStorageKey.students, generateStudents(14)),type:query.sort||"",sortBy:query.sortBy||""}),
+        students: sorter({students:addIfNotExist(LocalStorageKey.students, generateStudents(14))||[],type:query.sort||"",sortBy:query.sortBy||""})!,
       }
     }
     if(query.search){

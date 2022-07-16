@@ -16,12 +16,16 @@ export const HomeBoardPage: React.FC = () => {
   const [isRollMode, setIsRollMode] = useState(false)
   const [sortBy,setSortBy]=useState("first_name")
   const [search,setSearch]=useState("")
-
+  
   const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
   
+  const [count,setCount]=useState([])
+
   useEffect(() => {
     void getStudents({sort:""})
   }, [getStudents])
+
+  
 
   const onToolbarAction = (action: ToolbarAction) => {
     if (action === "roll") {
@@ -44,6 +48,19 @@ export const HomeBoardPage: React.FC = () => {
       setIsRollMode(false)
     }
   }
+  
+  const stateChange=({student,state}:any)=>{
+    if(count.length){
+      const filterCount=count.filter(item=>item.id!==student.id)      
+      setCount([...filterCount,{...student,state:state}])
+    }
+    else{
+      setCount([...count,{...student,state:state}])
+
+    }
+   
+  }
+ 
 
   return (
     <>
@@ -59,7 +76,7 @@ export const HomeBoardPage: React.FC = () => {
         {loadState === "loaded" && data?.students && (
           <>
             {data.students.map((student) => (
-              <StudentListTile key={student.id} isRollMode={isRollMode} student={student} />
+              <StudentListTile key={student.id} isRollMode={isRollMode} student={student} stateChange={(e)=>{stateChange({student:student,state:e})}}  />
             ))}
           </>
         )}
@@ -70,7 +87,7 @@ export const HomeBoardPage: React.FC = () => {
           </CenteredContainer>
         )}
       </S.PageContainer>
-      <ActiveRollOverlay isActive={isRollMode} onItemClick={onActiveRollAction} />
+      <ActiveRollOverlay isActive={isRollMode} onItemClick={onActiveRollAction} count={count} total={data?.students}/>
     </>
   )
 }
