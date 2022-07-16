@@ -20,6 +20,12 @@ export async function getHomeboardStudents({query}:any): Promise<ApiResponse<{ s
         students: searcher({students:addIfNotExist(LocalStorageKey.students, generateStudents(14)),searchValue:query.search||""}),
       }
     }
+    if(query.filter){
+      return {
+        success: true,
+        students: query.list.filter(item=>item.state===query.filter),
+      }
+    }
     else{
       return {
         success: true,

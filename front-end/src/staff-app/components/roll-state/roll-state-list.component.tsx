@@ -11,8 +11,9 @@ interface Props {
   size?: number
 }
 export const RollStateList: React.FC<Props> = ({ stateList, size = 14, onItemClick }) => {
-  const onClick = (type: ItemType) => {
-    if (onItemClick) {
+  
+  const onClick = (type: ItemType) => {    
+    if (onItemClick) {      
       onItemClick(type)
     }
   }

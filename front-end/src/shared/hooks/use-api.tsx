@@ -16,7 +16,6 @@ export function useApi<ReturnType = {}>({ url, initialLoadState = "loading" }: O
   const callApi = useCallback(
     async (params?: object) => {
       dispatch({ type: "loading" })
-      console.log(params,"useapi")
       
       function process(result: ApiResponse<ReturnType>) {
         if (result.success) {

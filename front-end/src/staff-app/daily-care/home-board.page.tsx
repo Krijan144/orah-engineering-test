@@ -44,6 +44,15 @@ export const HomeBoardPage: React.FC = () => {
  
 
   const onActiveRollAction = (action: ActiveRollAction) => {
+    if (action === "late"){
+      getStudents({filter:"late",list:count})
+    }
+    if (action === "present"){
+      getStudents({filter:"present",list:count})
+    }
+    if(action === "absent"){
+      getStudents({filter:"absent",list:count})
+    }
     if (action === "exit") {
       setIsRollMode(false)
     }
@@ -51,12 +60,11 @@ export const HomeBoardPage: React.FC = () => {
   
   const stateChange=({student,state}:any)=>{
     if(count.length){
-      const filterCount=count.filter(item=>item.id!==student.id)      
+      const filterCount=count.filter(item=>item.id !==student.id)      
       setCount([...filterCount,{...student,state:state}])
     }
     else{
       setCount([...count,{...student,state:state}])
-
     }
    
   }
@@ -87,12 +95,12 @@ export const HomeBoardPage: React.FC = () => {
           </CenteredContainer>
         )}
       </S.PageContainer>
-      <ActiveRollOverlay isActive={isRollMode} onItemClick={onActiveRollAction} count={count} total={data?.students}/>
+      <ActiveRollOverlay isActive={isRollMode} onItemClick={onActiveRollAction} count={count} total={data?.students} />
     </>
   )
 }
 
-type ToolbarAction = "roll" | "ascending-sort"|"descending-sort"|"search"
+type ToolbarAction = "roll" | "ascending-sort"|"descending-sort"|"search"|"late"|"absent"|"present"
 interface ToolbarProps {
   onItemClick: (action: ToolbarAction, value?: string) => void
   onSelectClick:(value:string)=>void
