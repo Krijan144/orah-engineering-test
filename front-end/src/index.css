@@ -19,31 +19,35 @@
 }
 .app-wrapper .image-wrapper {
 	perspective: 800px;
-  padding-top:6rem;	
-}
-.app-wrapper .text-wrapper{
-  margin-top: -4rem;
+  height: auto;  
 }
 
 .image-wrapper img {
-	width: 200px;
+	width: 300px;
 	height: 200px;
-	animation: rotateAnimation 6s linear infinite;
-}
-
-@keyframes rotateAnimation {
-	from {transform: rotateY(0deg);}
-	to {transform: rotateY(360deg);}
 }
 .app-wrapper{
   display: grid;
   place-content: center;
   height: 100vh;
 }
-.app-header a {
-  color: #fff;
+a {
   text-decoration: none;
 }
-.app-header a:hover{
-  transform: scale(1.2);
+.app-header button {
+  background: #002744;
+  border: none;
+  color: white;
+  border-radius: 20px;
+  font-size: 1.2rem;
+  padding: 0.6rem 1.5rem;
+  cursor: pointer;
+  transition: 0.4s;
+  margin-top: 1rem;
+}
+.app-header button:hover{
+    transform: scale(1.12);
+}
+.app-header p{
+  margin:0;
 }

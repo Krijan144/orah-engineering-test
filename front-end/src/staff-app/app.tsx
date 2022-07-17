@@ -4,18 +4,36 @@ import "shared/helpers/load-icons"
 import { Header } from "staff-app/components/header/header.component"
 import { HomeBoardPage } from "staff-app/daily-care/home-board.page"
 import { ActivityPage } from "staff-app/platform/activity.page"
+import styled from "styled-components"
+import { Sidebar } from "./components/sidebar/sidebar.component"
 
 function App() {
   return (
     <>
-      <Header />
-      <Routes>
-        <Route path="daily-care" element={<HomeBoardPage />} />
-        <Route path="activity" element={<ActivityPage />} />
-        <Route path="*" element={<div>No Match</div>} />
-      </Routes>
+    <Header/>
+    <AppBody>
+      <Sidebar/>
+      <AppBodyWrapper>
+          <Routes>
+            <Route path="daily-care" element={<HomeBoardPage />} />
+            <Route path="activity" element={<ActivityPage />} />
+          <Route path="*" element={<div>No Match</div>} />
+        </Routes>
+      </AppBodyWrapper>
+    </AppBody>
     </>
   )
 }
+const AppBodyWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: auto;
+  height:calc(100vh - 57px);
+`;
+const AppBody = styled.div`
+  display: flex;
+`;
 
 export default App
