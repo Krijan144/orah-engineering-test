@@ -14,9 +14,10 @@ interface Props {
 
 export const ActiveRollOverlay: React.FC<Props> = (props) => {
   const { isActive, onItemClick,studentstate,total} = props
-  const lateCount=studentstate?.filter((item:any)=>item.state==="late")
-  const presentCount=studentstate?.filter((item:any)=>item.state==="present")  
-  const absentCount=studentstate?.filter((item:any)=>item.state==="absent") 
+  
+  const lateCount=studentstate?.filter((item:any)=>item.roll_state==="late")
+  const presentCount=studentstate?.filter((item:any)=>item.roll_state==="present")  
+  const absentCount=studentstate?.filter((item:any)=>item.roll_state==="absent") 
   
    
   
