@@ -11,19 +11,19 @@ export async function getHomeboardStudents({query}:any): Promise<ApiResponse<{ s
     if(query.sort){    
       return {
         success: true,
-        students: sorter({students:addIfNotExist(LocalStorageKey.students, generateStudents(14))||[],type:query.sort||"",sortBy:query.sortBy||""})!,
+        students: sorter({list:addIfNotExist(LocalStorageKey.students, generateStudents(14))||[],type:query.sort||"",sortBy:query.sortBy||""})!,
       }
     }
     if(query.search){
       return {
         success: true,
-        students: searcher({students:addIfNotExist(LocalStorageKey.students, generateStudents(14)),searchValue:query.search||""}),
+        students: searcher({list:addIfNotExist(LocalStorageKey.students, generateStudents(14)),searchValue:query.search||""}),
       }
     }
     if(query.filter){
       return {
         success: true,
-        students: query.list.filter(item=>item.state===query.filter),
+        students: query.list.filter((item:any)=>item.state===query.filter),
       }
     }
     else{

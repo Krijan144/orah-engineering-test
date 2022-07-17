@@ -3,8 +3,9 @@ import { get, add, LocalStorageKey } from "shared/helpers/local-storage"
 import { ApiResponse } from "shared/interfaces/http.interface"
 import { Roll, RollInput } from "shared/models/roll"
 
-export async function saveActiveRoll(roll: RollInput): Promise<ApiResponse<{}>> {
-  try {
+export async function saveActiveRoll(rolls: RollInput): Promise<ApiResponse<{}>> {
+  try {    
+    const roll ={ student_roll_states: rolls};
     const rollsInStorage = get<Roll[]>(LocalStorageKey.rolls)
     const newRollId = rollsInStorage !== undefined ? rollsInStorage[rollsInStorage.length - 1].id + 1 : 1
     const rollsToSave = rollsInStorage !== undefined ? [...rollsInStorage, createRoll(newRollId, roll)] : [createRoll(newRollId, roll)]

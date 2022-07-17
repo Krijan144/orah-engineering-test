@@ -16,16 +16,15 @@ export const HomeBoardPage: React.FC = () => {
   const [isRollMode, setIsRollMode] = useState(false)
   const [sortBy,setSortBy]=useState("first_name")
   const [search,setSearch]=useState("")
-  
-  const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
-  
-  const [count,setCount]=useState([])
+  const [studentstate,setStudentstate]=useState([])
+
+  const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url:"get-homeboard-students" })
+  const [saveRoll]= useApi<{ students: Person[] }>({ url:"save-roll" })
 
   useEffect(() => {
     void getStudents({sort:""})
   }, [getStudents])
 
-  
 
   const onToolbarAction = (action: ToolbarAction) => {
     if (action === "roll") {
@@ -45,13 +44,16 @@ export const HomeBoardPage: React.FC = () => {
 
   const onActiveRollAction = (action: ActiveRollAction) => {
     if (action === "late"){
-      getStudents({filter:"late",list:count})
+      getStudents({filter:"late",list:studentstate})
     }
     if (action === "present"){
-      getStudents({filter:"present",list:count})
+      getStudents({filter:"present",list:studentstate})
     }
     if(action === "absent"){
-      getStudents({filter:"absent",list:count})
+      getStudents({filter:"absent",list:studentstate})
+    }
+    if(action === "complete"){
+      saveRoll(studentstate)
     }
     if (action === "exit") {
       setIsRollMode(false)
@@ -59,12 +61,12 @@ export const HomeBoardPage: React.FC = () => {
   }
   
   const stateChange=({student,state}:any)=>{
-    if(count.length){
-      const filterCount=count.filter(item=>item.id !==student.id)      
-      setCount([...filterCount,{...student,state:state}])
+    if(studentstate.length){
+      const filterStudentstate=studentstate.filter((item:any)=>item.id !==student.id)      
+      setStudentstate([...filterStudentstate,{...student,roll_state:state}])
     }
     else{
-      setCount([...count,{...student,state:state}])
+      setStudentstate([...studentstate,{...student,roll_state:state}])
     }
    
   }
@@ -95,7 +97,7 @@ export const HomeBoardPage: React.FC = () => {
           </CenteredContainer>
         )}
       </S.PageContainer>
-      <ActiveRollOverlay isActive={isRollMode} onItemClick={onActiveRollAction} count={count} total={data?.students} />
+      <ActiveRollOverlay isActive={isRollMode} onItemClick={onActiveRollAction} studentstate={studentstate} total={data?.students} />
     </>
   )
 }

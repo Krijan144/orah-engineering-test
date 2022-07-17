@@ -4,19 +4,19 @@ import Button from "@material-ui/core/Button"
 import { BorderRadius, Spacing } from "shared/styles/styles"
 import { RollStateList } from "staff-app/components/roll-state/roll-state-list.component"
 
-export type ActiveRollAction = "filter" | "exit" | "late" | "present" | "absent"
+export type ActiveRollAction = "filter" | "exit" | "late" | "present" | "absent"|"complete"
 interface Props {
   isActive: boolean
   total:[]
-  count?:[]
+  studentstate?:[]
   onItemClick: (action: ActiveRollAction, value?: string) => void
 }
 
 export const ActiveRollOverlay: React.FC<Props> = (props) => {
-  const { isActive, onItemClick,count,total} = props
-  const lateCount=count?.filter(item=>item.state==="late")
-  const presentCount=count?.filter(item=>item.state==="present")  
-  const absentCount=count?.filter(item=>item.state==="absent") 
+  const { isActive, onItemClick,studentstate,total} = props
+  const lateCount=studentstate?.filter((item:any)=>item.state==="late")
+  const presentCount=studentstate?.filter((item:any)=>item.state==="present")  
+  const absentCount=studentstate?.filter((item:any)=>item.state==="absent") 
   
    
   
@@ -38,7 +38,7 @@ export const ActiveRollOverlay: React.FC<Props> = (props) => {
             <Button color="inherit" onClick={() => onItemClick("exit")}>
               Exit
             </Button>
-            <Button color="inherit" style={{ marginLeft: Spacing.u2 }} onClick={() => onItemClick("exit")}>
+            <Button color="inherit" style={{ marginLeft: Spacing.u2 }} onClick={() => onItemClick("complete")}>
               Complete
             </Button>
           </div>

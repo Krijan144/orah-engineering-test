@@ -1,27 +1,27 @@
 
 interface Props {
-  students?: any
+  list?: any
   type?:string
   sortBy?:string
 }
-export const sorter=({students,type,sortBy}:Props)=>{          
+export const sorter=({list,type,sortBy}:Props)=>{          
     if(type==="ASC"){
-        return students?.sort( (a:any, b:any)=> {
+        return list?.sort( (a:any, b:any)=> {
         return a[`${sortBy}`].localeCompare(b[`${sortBy}`]); 
       });
     }
     if(type==="DSC"){       
-        return students?.sort( (a:any, b:any)=> {
+        return list?.sort( (a:any, b:any)=> {
           return b[`${sortBy}`].localeCompare(a[`${sortBy}`]); 
         });
     }
     else{       
-        return students
+        return list
     }}
 
-export const searcher=({students,searchValue}:any)=>{
-  const columns = students[0] && Object.keys(students[0]);  
-  return students.filter((student:any) => {
+export const searcher=({list,searchValue}:any)=>{
+  const columns = list[0] && Object.keys(list[0]);  
+  return list.filter((student:any) => {
     return columns.some(
       (column:any) =>
         student[column].toString().toLowerCase().indexOf(searchValue.toLowerCase()) > -1
