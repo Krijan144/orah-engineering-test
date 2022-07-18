@@ -8,19 +8,28 @@ import { RollStateSwitcher } from "staff-app/components/roll-state/roll-state-sw
 
 interface Props {
   isRollMode?: boolean
+  showRoll?: boolean
   student: Person
-  stateChange():string
+  stateChange?: any
 }
-export const StudentListTile: React.FC<Props> = ({ isRollMode, student,stateChange }) => {
+export const StudentListTile: React.FC<Props> = ({ isRollMode, student, stateChange, showRoll = false }) => {
   return (
     <S.Container>
       <S.Avatar url={Images.avatar}></S.Avatar>
       <S.Content>
         <div>{PersonHelper.getFullName(student)}</div>
       </S.Content>
+      {showRoll && (
+        <S.Content>
+          <S.RollState state={student.roll_state}>
+            <p>{student.roll_state}</p>
+          </S.RollState>
+        </S.Content>
+      )}
+
       {isRollMode && (
         <S.Roll>
-          <RollStateSwitcher onStateChange={(e)=>stateChange(e)}/>
+          <RollStateSwitcher onStateChange={(e) => stateChange(e)} />
         </S.Roll>
       )}
     </S.Container>
@@ -36,9 +45,10 @@ const S = {
     border-radius: ${BorderRadius.default};
     background-color: #fff;
     box-shadow: 0 2px 7px rgba(5, 66, 145, 0.13);
-    transition: box-shadow 0.3s ease-in-out;
-
+    transition: 0.3s ease-in-out;
+    cursor: pointer;
     &:hover {
+      transform: scale(1.02);
       box-shadow: 0 2px 7px rgba(5, 66, 145, 0.26);
     }
   `,
@@ -56,6 +66,12 @@ const S = {
     padding: ${Spacing.u2};
     color: ${Colors.dark.base};
     font-weight: ${FontWeight.strong};
+  `,
+  RollState: styled.div<{ state?: string }>`
+    color: ${({ state }) => (state === "present" ? "#13943B" : "late" ? "#F5A623" : "#39B9B9B")};
+    p {
+      text-transform: capitalize;
+    }
   `,
   Roll: styled.div`
     display: flex;

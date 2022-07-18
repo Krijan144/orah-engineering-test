@@ -4,23 +4,21 @@ import Button from "@material-ui/core/Button"
 import { BorderRadius, Spacing } from "shared/styles/styles"
 import { RollStateList } from "staff-app/components/roll-state/roll-state-list.component"
 
-export type ActiveRollAction = "filter" | "exit" | "late" | "present" | "absent"|"complete"
+export type ActiveRollAction = "filter" | "exit" | "late" | "present" | "absent" | "complete" | "all" | "unmark"
 interface Props {
   isActive: boolean
-  total:[]
-  studentstate?:[]
+  total?: any
+  studentstate?: []
   onItemClick: (action: ActiveRollAction, value?: string) => void
 }
 
 export const ActiveRollOverlay: React.FC<Props> = (props) => {
-  const { isActive, onItemClick,studentstate,total} = props
-  
-  const lateCount=studentstate?.filter((item:any)=>item.roll_state==="late")
-  const presentCount=studentstate?.filter((item:any)=>item.roll_state==="present")  
-  const absentCount=studentstate?.filter((item:any)=>item.roll_state==="absent") 
-  
-   
-  
+  const { isActive, onItemClick, studentstate, total } = props
+
+  const lateCount = studentstate?.filter((item: any) => item.roll_state === "late")
+  const presentCount = studentstate?.filter((item: any) => item.roll_state === "present")
+  const absentCount = studentstate?.filter((item: any) => item.roll_state === "absent")
+
   return (
     <S.Overlay isActive={isActive}>
       <S.Content>
@@ -28,12 +26,14 @@ export const ActiveRollOverlay: React.FC<Props> = (props) => {
         <div>
           <RollStateList
             stateList={[
-              { type: "all", count: total?.length||0 },
-              { type: "present", count: presentCount?.length||0 },
-              { type: "late", count: lateCount?.length||0},
-              { type: "absent", count: absentCount?.length||0 },
+              { type: "all", count: total?.length || 0 },
+              { type: "present", count: presentCount?.length || 0 },
+              { type: "late", count: lateCount?.length || 0 },
+              { type: "absent", count: absentCount?.length || 0 },
             ]}
-            onItemClick={(type)=>onItemClick(type)}
+            onItemClick={(type) => {
+              onItemClick(type)
+            }}
           />
           <div style={{ marginTop: Spacing.u6 }}>
             <Button color="inherit" onClick={() => onItemClick("exit")}>

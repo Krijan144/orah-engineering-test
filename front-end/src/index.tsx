@@ -13,16 +13,15 @@ const Home: React.FC = () => {
       <header className="app-header">
         <div className="app-wrapper">
           <div className="image-wrapper">
-            <img src={Orahlogo}/>
+            <img src={Orahlogo} />
           </div>
           <div className="text-wrapper">
             <p>Engineering Test</p>
             <Link to="staff/daily-care">
               <button>Staff</button>
             </Link>
-          </div>         
+          </div>
         </div>
-       
       </header>
     </div>
   )

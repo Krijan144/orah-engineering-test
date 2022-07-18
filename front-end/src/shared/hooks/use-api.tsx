@@ -8,15 +8,15 @@ import { saveActiveRoll } from "api/save-active-roll"
 interface Options {
   url: Endpoint
   initialLoadState?: LoadState
-  query?:{}
-  filter?:boolean
+  query?: {}
+  filter?: boolean
 }
-export function useApi<ReturnType = {}>({ url, initialLoadState = "loading" }: Options) {  
+export function useApi<ReturnType = {}>({ url, initialLoadState = "loading" }: Options) {
   const [state, dispatch] = useReducer(stateReducer<ReturnType>(), { data: undefined, loadState: initialLoadState, error: undefined })
   const callApi = useCallback(
     async (params?: object) => {
       dispatch({ type: "loading" })
-      
+
       function process(result: ApiResponse<ReturnType>) {
         if (result.success) {
           dispatch({ type: "success", result: result })
@@ -24,10 +24,10 @@ export function useApi<ReturnType = {}>({ url, initialLoadState = "loading" }: O
           dispatch({ type: "error", error: result.error })
         }
       }
-      
+
       switch (url) {
         case "get-homeboard-students":
-          return getHomeboardStudents({query:params}).then(process)
+          return getHomeboardStudents({ query: params }).then(process)
         case "get-activities":
           return getActivities().then(process)
         case "save-roll":
@@ -37,7 +37,7 @@ export function useApi<ReturnType = {}>({ url, initialLoadState = "loading" }: O
     [url]
   )
 
-  return [callApi, state.data, state.loadState, state.error ] as const
+  return [callApi, state.data, state.loadState, state.error] as const
 }
 
 /* use-api state reducer */

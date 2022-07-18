@@ -10,30 +10,30 @@ import { Sidebar } from "./components/sidebar/sidebar.component"
 function App() {
   return (
     <>
-    <Header/>
-    <AppBody>
-      <Sidebar/>
-      <AppBodyWrapper>
+      <Header />
+      <AppBody>
+        <Sidebar />
+        <AppBodyWrapper>
           <Routes>
             <Route path="daily-care" element={<HomeBoardPage />} />
             <Route path="activity" element={<ActivityPage />} />
-          <Route path="*" element={<div>No Match</div>} />
-        </Routes>
-      </AppBodyWrapper>
-    </AppBody>
+            <Route path="*" element={<div>No Match</div>} />
+          </Routes>
+        </AppBodyWrapper>
+      </AppBody>
     </>
   )
 }
 const AppBodyWrapper = styled.div`
-  width: 100%;
   display: flex;
+  width: 100%;
   flex-direction: column;
   justify-content: space-between;
   overflow: auto;
-  height:calc(100vh - 57px);
-`;
+  height: calc(100vh - 57px);
+`
 const AppBody = styled.div`
   display: flex;
-`;
+`
 
 export default App
