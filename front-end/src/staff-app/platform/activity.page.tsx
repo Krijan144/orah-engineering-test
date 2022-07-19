@@ -11,25 +11,35 @@ import { colors } from "@material-ui/core"
 
 export const ActivityPage: React.FC = () => {
   const [getStudents, data, loadState] = useApi<{ activity: [] }>({ url: "get-activities" })
+  const [params, setParams] = useState({ value: "", type: "" })
   useEffect(() => {
     void getStudents()
   }, [getStudents])
-
+  const onFilterAction = (action: string) => {
+    if (action === "filter") {
+      getStudents(params)
+    }
+    if (action === "default") {
+      getStudents()
+    }
+  }
   return (
     <S.Container>
       <S.Title> Activity Page</S.Title>
-      <div>
-        <select>
+      <div style={{display:"flex",columnGap:"10px"}}>
+        <select onChange={(e) => setParams({ value: e.target.value, type: "date" })}>
+          <option value="" disabled selected>
+            Select Date
+          </option>
           {data?.activity.map((item: any) => (
-            <option value={item.entity.completed_at}>{item.entity.completed_at}</option>
+            <option key={item.entity.completed_at} value={item.entity.completed_at}>
+              {item.entity.completed_at}
+            </option>
           ))}
         </select>
-        <select>
-          {data?.activity.map((item: any) => (
-            <option value={item.entity.name}>{item.entity.name}</option>
-          ))}
-        </select>
-        <Button>Filter</Button>
+        <Button onClick={() => onFilterAction("filter")}>Filter</Button>
+        <Button color="darkred" onClick={() => onFilterAction("default")}>Reset</Button>
+
       </div>
       {loadState === "loading" && (
         <CenteredContainer>
@@ -88,7 +98,7 @@ const S = {
   `,
 }
 export const Button = styled.button`
-  background-color: ${Colors.blue.base};
+  background-color: ${({ color }) => (color ? color : Colors.blue.base)};
   border: 1px solid transparent;
   border-radius: 0.75rem;
   box-sizing: border-box;
@@ -102,9 +112,9 @@ export const Button = styled.button`
   -webkit-user-select: none;
   touch-action: manipulation;
   width: auto;
-  transition:0.3s;
+  transition: 0.3s;
   :hover {
-    transform:scale(1.12)
+    transform: scale(1.12);
   }
 
   :focus {

@@ -29,7 +29,7 @@ export function useApi<ReturnType = {}>({ url, initialLoadState = "loading" }: O
         case "get-homeboard-students":
           return getHomeboardStudents({ query: params }).then(process)
         case "get-activities":
-          return getActivities().then(process)
+          return getActivities(params).then(process)
         case "save-roll":
           return saveActiveRoll(params as RollInput).then(process)
       }

@@ -11,8 +11,10 @@ import { useApi } from "shared/hooks/use-api"
 import { StudentListTile } from "staff-app/components/student-list-tile/student-list-tile.component"
 import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active-roll-overlay/active-roll-overlay.component"
 import { nameSort } from "staff-app/constants/daily-care"
+import { useNavigate } from "react-router-dom"
 
 export const HomeBoardPage: React.FC = () => {
+  let navigate = useNavigate()
   const [isRollMode, setIsRollMode] = useState(false)
   const [sortBy, setSortBy] = useState("first_name")
   const [search, setSearch] = useState("")
@@ -56,6 +58,7 @@ export const HomeBoardPage: React.FC = () => {
     }
     if (action === "complete") {
       saveRoll(studentstate)
+      navigate("/staff/activity")
     }
     if (action === "exit") {
       setIsRollMode(false)
@@ -167,7 +170,7 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
         </div>
       </div>
 
-      <div style={{ display: "flex", alignItems: "center",columnGap:"5px" }}>
+      <div style={{ display: "flex", alignItems: "center", columnGap: "5px" }}>
         <S.StyledInput id="search" onChange={(e) => handleChange(e)} value={search} />
         <BsSearch onClick={() => onItemClick("search")} />
         {search && <div onClick={() => onItemClick("default")}>Reset</div>}
@@ -200,9 +203,9 @@ const S = {
   `,
   Title: styled.h4`
     font-size: 1.3rem;
-    font-weight:bold;
-    width:fit-content;
-    border-bottom:4px solid;
+    font-weight: bold;
+    width: fit-content;
+    border-bottom: 4px solid;
     color: ${Colors.blue.base};
   `,
   Button: styled(Button)`
