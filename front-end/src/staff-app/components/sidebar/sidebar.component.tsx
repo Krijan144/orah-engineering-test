@@ -65,6 +65,18 @@ const S = {
     p {
       display: ${({ collapsed }) => (collapsed ? "none" : "")};
     }
+    &::after {
+      content: '';
+      z-index: 200;
+      position: absolute;
+      background-color: transparent;
+      height: 50px;
+      width: 25px;
+      transition: all 0.3s;
+      left:${({ collapsed }) => (collapsed ? "56px" : "320px")};
+      border-top-left-radius: 25px;
+      box-shadow: 0 -25px 0 0 ${Colors.blue.base};
+    }
   `,
   SidebarItem: styled.div<{ collapsed?: boolean;}>`
     display: flex;
@@ -72,6 +84,7 @@ const S = {
     column-gap: 15px;
     height: 4rem;
     width: ${({ collapsed }) => (collapsed ? "56px" : "320px")};
+   
   `,
   HeaderItems: styled.nav`
     display: flex;

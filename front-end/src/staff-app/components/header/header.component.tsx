@@ -22,7 +22,7 @@ const S = {
     color: #fff;
     h4 {
       padding-left: 10px;
-      font-size: 2rem;
+      font-size: 1.5rem;
       color: white;
     }
   `,
