@@ -5,6 +5,8 @@ import { Activity } from "shared/models/activity"
 import { Roll } from "shared/models/roll"
 
 export async function getActivities(params: any): Promise<ApiResponse<{ activity: Activity[] }>> {
+  console.log(params);
+  
   try {
     const rolls = get<Roll[]>(LocalStorageKey.rolls) || []
     await httpMock({ randomFailure: true })

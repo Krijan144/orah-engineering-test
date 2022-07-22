@@ -7,6 +7,7 @@ import { sorter, searcher } from "staff-app/utils/sort"
 
 export async function getHomeboardStudents({ query }: any): Promise<ApiResponse<{ students: Person[] }>> {
   try {
+    
     await httpMock({ randomFailure: true })
     if (query.sort) {
       return {
@@ -23,7 +24,7 @@ export async function getHomeboardStudents({ query }: any): Promise<ApiResponse<
     if (query.filter) {
       return {
         success: true,
-        students: query.list.filter((item: any) => item.state === query.filter),
+        students: query.list.filter((item: any) => item.roll_state === query.filter),
       }
     } else {
       return {

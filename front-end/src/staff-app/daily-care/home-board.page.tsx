@@ -46,7 +46,7 @@ export const HomeBoardPage: React.FC = () => {
     }
   }
 
-  const onActiveRollAction = (action: ActiveRollAction) => {
+  const onActiveRollAction = (action: ActiveRollAction) => {    
     if (action === "late") {
       getStudents({ filter: "late", list: studentstate })
     }
@@ -129,10 +129,7 @@ interface ToolbarProps {
 const Toolbar: React.FC<ToolbarProps> = (props) => {
   const { onItemClick, onSelectClick, handleChange, search } = props
   const [active, setActive] = useState("")
-  const activeStyle = ({ isActive }: { isActive: boolean }) => ({
-    color: isActive ? "#00FF00" : "none",
-    transition: isActive ? "scale(1.12)" : "0",
-  })
+ 
 
   return (
     <S.ToolbarContainer>
