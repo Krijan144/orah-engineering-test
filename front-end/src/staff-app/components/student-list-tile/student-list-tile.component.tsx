@@ -68,6 +68,7 @@ const S = {
     font-weight: ${FontWeight.strong};
   `,
   RollState: styled.div<{ state?: string }>`
+    float:right;
     color: ${({ state }) => (state === "present" ? "#13943B" : "late" ? "#F5A623" : "#39B9B9B")};
     p {
       text-transform: capitalize;
